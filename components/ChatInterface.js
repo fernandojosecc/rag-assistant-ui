@@ -40,12 +40,19 @@ export default function ChatInterface() {
       }
 
       const result = await response.json();
+      console.log('Backend response:', result);
+      
+      // Parse the answer field to extract English, Spanish, and Source
+      const answer = result.answer || '';
+      const englishMatch = answer.match(/English:\s*(.*?)(?=\n\nEspañol:|\n\nSource:|$)/s);
+      const spanishMatch = answer.match(/Español:\s*(.*?)(?=\n\nSource:|$)/s);
+      const sourceMatch = answer.match(/Source:\s*"([^"]*)"/s);
       
       const botMessage = {
         role: 'bot',
-        english: result.english || 'No English response available',
-        spanish: result.spanish || 'No Spanish response available',
-        source: result.source || 'No source available'
+        english: englishMatch ? englishMatch[1].trim() : (result.answer || 'No English response available'),
+        spanish: spanishMatch ? spanishMatch[1].trim() : 'No Spanish response available',
+        source: sourceMatch ? sourceMatch[1].trim() : 'No source available'
       };
       
       setMessages(prev => [...prev, botMessage]);

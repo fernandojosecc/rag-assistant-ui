@@ -3,14 +3,24 @@
 import { useState, useRef } from 'react';
 
 export default function UploadZone({ onUploadSuccess }) {
+  console.log('UploadZone component rendering');
+  
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(null);
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
 
+  const handleClick = () => {
+    console.log('Upload zone clicked');
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
+    console.log('File selected:', file);
     if (file && file.type === 'application/pdf') {
       setSelectedFile(file);
       setError(null);
@@ -23,6 +33,7 @@ export default function UploadZone({ onUploadSuccess }) {
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
+    console.log('File dropped:', file);
     if (file && file.type === 'application/pdf') {
       setSelectedFile(file);
       setError(null);
@@ -45,21 +56,28 @@ export default function UploadZone({ onUploadSuccess }) {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/upload`;
+    console.log('Uploading to:', apiUrl);
+    console.log('Selected file:', selectedFile.name, selectedFile.size);
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error('Upload failed');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Upload error:', errorData);
+        throw new Error(`Upload failed: ${response.status} ${errorData.detail || response.statusText}`);
       }
 
       const result = await response.json();
       setUploadSuccess(`Document ready! ${selectedFile.name} — ${result.chunks || 0} chunks processed`);
       onUploadSuccess();
     } catch (err) {
-      setError('Upload failed. Please try again.');
+      console.error('Upload error:', err);
+      setError(`Upload failed: ${err.message}`);
     } finally {
       setUploading(false);
     }
@@ -78,23 +96,15 @@ export default function UploadZone({ onUploadSuccess }) {
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        onClick={() => fileInputRef.current?.click()}
+        onClick={handleClick}
         style={{
-          border: `2px dashed var(--border-light)`,
+          border: '2px dashed var(--border-light)',
           borderRadius: '8px',
           padding: '3rem 2rem',
           textAlign: 'center',
           cursor: 'pointer',
           transition: 'all 0.2s ease',
           background: 'var(--bg-page)'
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.borderColor = 'var(--blue-primary)';
-          e.target.style.background = 'var(--blue-light)';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.borderColor = 'var(--border-light)';
-          e.target.style.background = 'var(--bg-page)';
         }}
       >
         <input
