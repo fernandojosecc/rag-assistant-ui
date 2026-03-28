@@ -40,7 +40,6 @@ export default function ChatInterface() {
       }
 
       const result = await response.json();
-      console.log('Backend response:', result);
       
       // Parse the answer field to extract English, Spanish, and Source
       const answer = result.answer || '';

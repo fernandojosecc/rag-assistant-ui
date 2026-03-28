@@ -3,7 +3,6 @@
 import { useState, useRef } from 'react';
 
 export default function UploadZone({ onUploadSuccess }) {
-  console.log('UploadZone component rendering');
   
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -12,7 +11,6 @@ export default function UploadZone({ onUploadSuccess }) {
   const fileInputRef = useRef(null);
 
   const handleClick = () => {
-    console.log('Upload zone clicked');
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -20,7 +18,6 @@ export default function UploadZone({ onUploadSuccess }) {
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    console.log('File selected:', file);
     if (file && file.type === 'application/pdf') {
       setSelectedFile(file);
       setError(null);
@@ -33,7 +30,6 @@ export default function UploadZone({ onUploadSuccess }) {
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    console.log('File dropped:', file);
     if (file && file.type === 'application/pdf') {
       setSelectedFile(file);
       setError(null);
@@ -57,8 +53,6 @@ export default function UploadZone({ onUploadSuccess }) {
     formData.append('file', selectedFile);
 
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/upload`;
-    console.log('Uploading to:', apiUrl);
-    console.log('Selected file:', selectedFile.name, selectedFile.size);
 
     try {
       const response = await fetch(apiUrl, {
@@ -68,7 +62,6 @@ export default function UploadZone({ onUploadSuccess }) {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('Upload error:', errorData);
         throw new Error(`Upload failed: ${response.status} ${errorData.detail || response.statusText}`);
       }
 
@@ -76,7 +69,6 @@ export default function UploadZone({ onUploadSuccess }) {
       setUploadSuccess(`Document ready! ${selectedFile.name} — ${result.chunks || 0} chunks processed`);
       onUploadSuccess();
     } catch (err) {
-      console.error('Upload error:', err);
       setError(`Upload failed: ${err.message}`);
     } finally {
       setUploading(false);

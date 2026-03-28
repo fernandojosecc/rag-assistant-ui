@@ -7,11 +7,9 @@ import ChatInterface from '../components/ChatInterface';
 import Footer from '../components/Footer';
 
 export default function Home() {
-  console.log('Home component rendering');
   const [documentReady, setDocumentReady] = useState(false);
 
   const handleUploadSuccess = () => {
-    console.log('Upload success callback called');
     setDocumentReady(true);
   };
 
