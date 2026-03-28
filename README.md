@@ -1,37 +1,186 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RAG Document Assistant
 
-## Getting Started
+A modern web application that allows users to upload PDF documents and ask questions about their content using AI-powered retrieval-augmented generation (RAG).
 
-First, run the development server:
+## Features
+
+- 📄 **PDF Upload**: Drag-and-drop or click to upload PDF documents
+- 🤖 **AI Chat**: Ask questions about your uploaded documents
+- 🌐 **Multilingual**: Get responses in both English and Spanish
+- 📚 **Source Citations**: See the exact source text used for answers
+- ⚡ **Real-time**: Fast responses powered by FastAPI backend
+
+## Tech Stack
+
+### Frontend
+- **Next.js 16** - React framework with App Router
+- **React 19** - UI library
+- **CSS Variables** - Customizable theming system
+
+### Backend
+- **FastAPI** - High-performance Python web framework
+- **LangChain** - RAG orchestration
+- **Claude API** - AI model for responses
+- **Pinecone** - Vector database for document storage
+
+## Prerequisites
+
+- Node.js 18+ and npm
+- Python 3.8+ and pip
+- Access to Claude API
+- Pinecone API key
+
+## Installation
+
+### Frontend Setup
 
 ```bash
+cd rag-assistant-ui
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The frontend will be available at `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Backend Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cd rag-backend
+pip install -r requirements.txt
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
-## Learn More
+The backend API will be available at `http://localhost:8000`
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `.env.local` file in the frontend directory:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-## Deploy on Vercel
+Create a `.env` file in the backend directory:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```env
+ANTHROPIC_API_KEY=your_claude_api_key
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_INDEX_NAME=your_index_name
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# rag-assistant-ui
+## Usage
+
+1. **Upload a Document**
+   - Drag and drop a PDF file into the upload zone
+   - Or click to browse and select a PDF
+   - Wait for processing confirmation
+
+2. **Ask Questions**
+   - Type your question in the chat interface
+   - Press Enter or click "Send"
+   - Receive answers in English and Spanish with source citations
+
+3. **View Sources**
+   - Each response includes the exact text source
+   - Helps verify accuracy and find more context
+
+## API Endpoints
+
+### Upload Document
+```
+POST /upload
+Content-Type: multipart/form-data
+
+Response:
+{
+  "status": "success",
+  "chunks": 15,
+  "message": "Successfully processed document.pdf"
+}
+```
+
+### Chat with Document
+```
+POST /chat
+Content-Type: application/json
+
+{
+  "question": "What is this document about?"
+}
+
+Response:
+{
+  "answer": "English: Response text\n\nEspañol: Texto en español\n\nSource: \"Source citation\""
+}
+```
+
+## Development
+
+### Project Structure
+
+```
+rag-assistant-ui/
+├── app/                  # Next.js app directory
+│   ├── globals.css        # Global styles and CSS variables
+│   ├── layout.js         # Root layout component
+│   └── page.js           # Main page component
+├── components/           # Reusable React components
+│   ├── Header.js         # Application header
+│   ├── UploadZone.js     # File upload interface
+│   ├── ChatInterface.js  # Chat functionality
+│   └── Footer.js        # Application footer
+└── public/              # Static assets
+```
+
+### Available Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint      # Run ESLint
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Upload not working**
+- Check that backend is running on port 8000
+- Verify `.env.local` has correct API URL
+- Ensure file is a valid PDF
+
+**No chat responses**
+- Confirm document was uploaded successfully
+- Check backend logs for errors
+- Verify API keys are correctly configured
+
+**CORS errors**
+- Ensure backend has CORS middleware configured
+- Check that frontend URL is in allowed origins
+
+### Browser Console Tips
+
+Open Developer Tools (F12) and check:
+- **Console**: For JavaScript errors
+- **Network**: For failed API requests
+- **Elements**: For UI rendering issues
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For issues and questions:
+- Open an issue on GitHub
+- Check the troubleshooting section above
+- Review browser console for specific errors
