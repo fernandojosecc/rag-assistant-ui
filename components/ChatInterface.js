@@ -23,21 +23,35 @@ export default function ChatInterface() {
   const handleSend = async () => {
     if (!inputValue.trim() || chatLoading) return;
 
-    const userMessage = { role: 'user', content: inputValue.trim() };
-    setMessages(prev => [...prev, userMessage]);
-    setInputValue('');
-    setError(null);
+    const formatTimestamp = () => {
+    const now = new Date();
+    return now.toLocaleTimeString('en-US', { 
+      hour: 'numeric', 
+      minute: '2-digit',
+      hour12: true 
+    });
+  };
 
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/chat`;
-    const result = await sendMessage(inputValue.trim(), apiUrl);
-    
-    if (result.success) {
-      const botMessage = {
+  const userMessage = { 
+    role: 'user', 
+    content: inputValue.trim(),
+    timestamp: formatTimestamp()
+  };
+  setMessages(prev => [...prev, userMessage]);
+  setInputValue('');
+  setError(null);
+
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/chat`;
+  const result = await sendMessage(inputValue.trim(), apiUrl);
+  
+  if (result.success) {
+    const botMessage = {
         role: 'bot',
         english: result.data.english,
         spanish: result.data.spanish,
         source: result.data.source,
-        isNew: true
+        isNew: true,
+        timestamp: formatTimestamp()
       };
       
       setMessages(prev => [...prev, botMessage]);
@@ -105,6 +119,13 @@ export default function ChatInterface() {
                   maxWidth: '70%',
                   wordWrap: 'break-word'
                 }}>
+                  <div style={{
+                    fontSize: '0.75rem',
+                    marginBottom: '0.25rem',
+                    opacity: 0.8
+                  }}>
+                    {message.timestamp}
+                  </div>
                   {message.content}
                 </div>
               </div>
@@ -150,21 +171,19 @@ export default function ChatInterface() {
                 <div>
                   <span style={{
                     background: '#6b7280',
-                    color: 'white',
-                    padding: '0.25rem 0.5rem',
-                    borderRadius: '4px',
-                    fontSize: '0.875rem',
-                    fontWeight: '500'
                   }}>
-                    Source:
                   </span>
-                  <p style={{
-                    margin: '0.5rem 0 0 0',
+                </div>
+
+                <div style={{ marginBottom: '0.75rem' }}>
+                  <span style={{
                     color: 'var(--text-muted)',
-                    fontStyle: 'italic',
-                    lineHeight: '1.5',
-                    fontSize: '0.9rem'
+                    fontSize: '0.75rem',
+                    fontStyle: 'italic'
                   }}>
+                    {message.timestamp}
+                  </span>
+                  <p style={{ margin: '0.5rem 0 0 0', color: 'var(--text-primary)', lineHeight: '1.5' }}>
                     "{message.source}"
                   </p>
                 </div>
