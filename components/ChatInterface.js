@@ -8,6 +8,7 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState(null);
+  const [expandedSources, setExpandedSources] = useState({});
   const messagesEndRef = useRef(null);
   
   const { sendMessage, chatLoading, chatError } = useChat();
@@ -19,6 +20,13 @@ export default function ChatInterface() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const toggleSource = (messageIndex) => {
+    setExpandedSources(prev => ({
+      ...prev,
+      [messageIndex]: !prev[messageIndex]
+    }));
+  };
 
   const handleSend = async () => {
     if (!inputValue.trim() || chatLoading) return;
@@ -183,9 +191,34 @@ export default function ChatInterface() {
                   }}>
                     {message.timestamp}
                   </span>
-                  <p style={{ margin: '0.5rem 0 0 0', color: 'var(--text-primary)', lineHeight: '1.5' }}>
-                    "{message.source}"
-                  </p>
+                  <button
+                    onClick={() => toggleSource(index)}
+                    style={{
+                      background: 'none',
+                      border: '1px solid var(--border-light)',
+                      borderRadius: '4px',
+                      padding: '0.25rem 0.5rem',
+                      cursor: 'pointer',
+                      fontSize: '0.75rem',
+                      color: 'var(--text-muted)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem'
+                    }}
+                  >
+                    View source {expandedSources[index] ? '▲' : '▼'}
+                  </button>
+                  {expandedSources[index] && (
+                    <p style={{ 
+                      margin: '0.5rem 0 0 0', 
+                      color: 'var(--text-primary)', 
+                      lineHeight: '1.5',
+                      fontStyle: 'italic',
+                      fontSize: '0.9rem'
+                    }}>
+                      "{message.source}"
+                    </p>
+                  )}
                 </div>
               </div>
             )}
