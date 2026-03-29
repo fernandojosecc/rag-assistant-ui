@@ -79,6 +79,7 @@ export default function ChatInterface() {
     <div className="card" style={{ 
       maxWidth: '800px', 
       margin: '2rem auto',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.07)',
       height: '600px',
       display: 'flex',
       flexDirection: 'column'
