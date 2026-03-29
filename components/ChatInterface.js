@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Button from './Button';
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([]);
@@ -260,16 +261,15 @@ export default function ChatInterface() {
             background: 'white'
           }}
         />
-        <button
+        <Button
           onClick={handleSend}
           disabled={isLoading || !inputValue.trim()}
-          className="btn btn-primary"
           style={{
             padding: '0.75rem 1.5rem'
           }}
         >
           Send
-        </button>
+        </Button>
       </div>
     </div>
   );

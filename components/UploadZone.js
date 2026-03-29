@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Button from './Button';
 
 export default function UploadZone({ onUploadSuccess }) {
   
@@ -146,14 +147,13 @@ export default function UploadZone({ onUploadSuccess }) {
             </button>
           </div>
           
-          <button
+          <Button
             onClick={handleUpload}
             disabled={uploading}
-            className="btn btn-primary"
             style={{ width: '100%' }}
           >
             {uploading ? 'Uploading...' : 'Upload Document'}
-          </button>
+          </Button>
         </div>
       )}
 
