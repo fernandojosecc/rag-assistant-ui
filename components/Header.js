@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Container from './Container';
 
 export default function Header({ documentReady }) {
   return (
@@ -11,7 +12,7 @@ export default function Header({ documentReady }) {
       textAlign: 'center',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
+      <Container>
         <h1 style={{
           color: 'var(--blue-primary)',
           fontSize: '2rem',
@@ -49,7 +50,7 @@ export default function Header({ documentReady }) {
             {documentReady ? 'Ready' : 'No document uploaded'}
           </span>
         </div>
-      </div>
+      </Container>
     </header>
   );
 }

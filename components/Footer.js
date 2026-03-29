@@ -1,3 +1,5 @@
+import Container from './Container';
+
 export default function Footer() {
   return (
     <footer style={{
@@ -7,7 +9,7 @@ export default function Footer() {
       marginTop: 'auto',
       textAlign: 'center'
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
+      <Container>
         <p style={{
           color: 'var(--text-muted)',
           fontSize: '0.9rem',
@@ -58,7 +60,7 @@ export default function Footer() {
         }}>
           © 2024 Fernando Contreras
         </p>
-      </div>
+      </Container>
     </footer>
   );
 }
