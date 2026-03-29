@@ -193,12 +193,30 @@ export default function ChatInterface() {
           <div style={{
             display: 'flex',
             justifyContent: 'center',
-            padding: '1rem'
+            padding: '2rem',
+            alignItems: 'center',
+            gap: '1rem'
           }}>
-            <div className="loading-dots">
-              <span></span>
-              <span></span>
-              <span></span>
+            <div style={{
+              width: '24px',
+              height: '24px',
+              border: '3px solid var(--border-light)',
+              borderTop: '3px solid var(--blue-primary)',
+              borderRadius: '50%',
+              animation: 'spin 1s ease-in-out infinite'
+            }}></div>
+            <div style={{
+              color: 'var(--text-muted)',
+              fontSize: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}>
+              <span>Thinking...</span>
+              <span style={{ fontSize: '0.875rem', fontStyle: 'italic' }}>
+                Analyzing your document to find the best answer
+              </span>
             </div>
           </div>
         )}

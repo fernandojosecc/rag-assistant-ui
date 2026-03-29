@@ -152,15 +152,34 @@ export default function UploadZone({ onUploadSuccess }) {
             className="btn btn-primary"
             style={{ width: '100%' }}
           >
-            {uploading ? (
-              <>
-                <span className="spinner" style={{ marginRight: '0.5rem' }}></span>
-                Uploading...
-              </>
-            ) : (
-              'Upload Document'
-            )}
+            {uploading ? 'Uploading...' : 'Upload Document'}
           </button>
+        </div>
+      )}
+
+      {uploading && (
+        <div style={{
+          marginTop: '1rem',
+          padding: '1rem',
+          background: '#e0f2fe',
+          border: '1px solid #0ea5e9',
+          borderRadius: '6px',
+          color: '#0c4a6e',
+          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.5rem'
+        }}>
+          <div style={{
+            width: '20px',
+            height: '20px',
+            border: '2px solid #0284c7',
+            borderTop: '2px solid transparent',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }}></div>
+          <span>Processing document... This may take a moment.</span>
         </div>
       )}
 
