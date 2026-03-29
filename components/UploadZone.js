@@ -9,6 +9,7 @@ export default function UploadZone({ onUploadSuccess }) {
   const [uploadSuccess, setUploadSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef(null);
   
   const { uploadFile, uploadLoading, uploadError } = useUpload();
@@ -57,7 +58,16 @@ export default function UploadZone({ onUploadSuccess }) {
     if (!selectedFile) return;
 
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/upload`;
+    
+    // Start fake progress
+    const progressInterval = setInterval(() => {
+      setUploadProgress(prev => Math.min(prev + 10, 90));
+    }, 200);
+    
     const result = await uploadFile(selectedFile, apiUrl);
+    
+    clearInterval(progressInterval);
+    setUploadProgress(100);
     
     if (result.success) {
       setUploadSuccess(`Document ready! ${selectedFile.name} — ${result.data.chunks || 0} chunks processed`);
@@ -159,12 +169,44 @@ export default function UploadZone({ onUploadSuccess }) {
           color: '#0c4a6e',
           textAlign: 'center',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          flexDirection: 'column',
           gap: '0.5rem'
         }}>
           <div className="loading-spinner"></div>
           <span>Processing document... This may take a moment.</span>
+          
+          {/* Progress Bar */}
+          <div style={{
+            width: '100%',
+            height: '4px',
+            backgroundColor: '#e5e7eb',
+            borderRadius: '2px',
+            marginTop: '0.5rem',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              width: `${uploadProgress}%`,
+              height: '100%',
+              background: 'linear-gradient(90deg, var(--blue-primary), var(--blue-primary))',
+              borderRadius: '2px',
+              transition: 'width 0.3s ease',
+              position: 'relative'
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '0',
+                right: '0',
+                bottom: '0',
+                left: '0',
+                background: 'rgba(255, 255, 255, 0.3)',
+                animation: 'shimmer 2s infinite'
+              }}></div>
+            </div>
+          </div>
+          
+          <div style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>
+            {uploadProgress}% complete
+          </div>
         </div>
       )}
 

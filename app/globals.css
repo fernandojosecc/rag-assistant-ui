@@ -141,6 +141,19 @@ a {
   animation: spin 1s ease-in-out infinite;
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer {
+  animation: shimmer 2s infinite;
+}
+
 .btn {
   padding: 0.75rem 1.5rem;
   border: none;
