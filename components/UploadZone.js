@@ -8,6 +8,7 @@ export default function UploadZone({ onUploadSuccess }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(null);
   const [error, setError] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   
   const { uploadFile, uploadLoading, uploadError } = useUpload();
@@ -39,10 +40,17 @@ export default function UploadZone({ onUploadSuccess }) {
     } else {
       setError('Please drop a PDF file');
     }
+    setIsDragging(false);
   };
 
   const handleDragOver = (event) => {
     event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (event) => {
+    event.preventDefault();
+    setIsDragging(false);
   };
 
   const handleUpload = async () => {
@@ -72,15 +80,16 @@ export default function UploadZone({ onUploadSuccess }) {
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
         onClick={handleClick}
         style={{
-          border: '2px dashed var(--border-light)',
+          border: `2px dashed ${isDragging ? 'var(--blue-primary)' : 'var(--border-light)'}`,
           borderRadius: '8px',
           padding: '3rem 2rem',
           textAlign: 'center',
           cursor: 'pointer',
           transition: 'all 0.2s ease',
-          background: 'var(--bg-page)'
+          background: isDragging ? 'var(--blue-light)' : 'var(--bg-page)'
         }}
       >
         <input
