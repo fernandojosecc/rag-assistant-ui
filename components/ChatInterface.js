@@ -36,7 +36,8 @@ export default function ChatInterface() {
         role: 'bot',
         english: result.data.english,
         spanish: result.data.spanish,
-        source: result.data.source
+        source: result.data.source,
+        isNew: true
       };
       
       setMessages(prev => [...prev, botMessage]);
@@ -89,7 +90,7 @@ export default function ChatInterface() {
         )}
 
         {messages.map((message, index) => (
-          <div key={index}>
+          <div key={index} className={`fade-in ${message.isNew ? 'new-message' : ''}`}>
             {message.role === 'user' ? (
               <div style={{
                 display: 'flex',
