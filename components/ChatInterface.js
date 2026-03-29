@@ -2,13 +2,15 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Button from './Button';
+import { useChat } from '../hooks/useApi';
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
+  
+  const { sendMessage, chatLoading, chatError } = useChat();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -19,47 +21,27 @@ export default function ChatInterface() {
   }, [messages]);
 
   const handleSend = async () => {
-    if (!inputValue.trim() || isLoading) return;
+    if (!inputValue.trim() || chatLoading) return;
 
     const userMessage = { role: 'user', content: inputValue.trim() };
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
-    setIsLoading(true);
     setError(null);
 
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ question: userMessage.content }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to get response');
-      }
-
-      const result = await response.json();
-      
-      // Parse the answer field to extract English, Spanish, and Source
-      const answer = result.answer || '';
-      const englishMatch = answer.match(/English:\s*(.*?)(?=\n\nEspañol:|\n\nSource:|$)/s);
-      const spanishMatch = answer.match(/Español:\s*(.*?)(?=\n\nSource:|$)/s);
-      const sourceMatch = answer.match(/Source:\s*"([^"]*)"/s);
-      
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/chat`;
+    const result = await sendMessage(inputValue.trim(), apiUrl);
+    
+    if (result.success) {
       const botMessage = {
         role: 'bot',
-        english: englishMatch ? englishMatch[1].trim() : (result.answer || 'No English response available'),
-        spanish: spanishMatch ? spanishMatch[1].trim() : 'No Spanish response available',
-        source: sourceMatch ? sourceMatch[1].trim() : 'No source available'
+        english: result.data.english,
+        spanish: result.data.spanish,
+        source: result.data.source
       };
       
       setMessages(prev => [...prev, botMessage]);
-    } catch (err) {
-      setError('Sorry, something went wrong. Please try again.');
-    } finally {
-      setIsLoading(false);
+    } else {
+      setError(result.error);
     }
   };
 
@@ -190,7 +172,7 @@ export default function ChatInterface() {
           </div>
         ))}
 
-        {isLoading && (
+        {chatLoading && (
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -198,14 +180,7 @@ export default function ChatInterface() {
             alignItems: 'center',
             gap: '1rem'
           }}>
-            <div style={{
-              width: '24px',
-              height: '24px',
-              border: '3px solid var(--border-light)',
-              borderTop: '3px solid var(--blue-primary)',
-              borderRadius: '50%',
-              animation: 'spin 1s ease-in-out infinite'
-            }}></div>
+            <div className="loading-spinner"></div>
             <div style={{
               color: 'var(--text-muted)',
               fontSize: '1rem',
@@ -263,7 +238,7 @@ export default function ChatInterface() {
         />
         <Button
           onClick={handleSend}
-          disabled={isLoading || !inputValue.trim()}
+          disabled={chatLoading || !inputValue.trim()}
           style={{
             padding: '0.75rem 1.5rem'
           }}

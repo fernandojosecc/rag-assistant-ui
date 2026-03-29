@@ -2,14 +2,15 @@
 
 import { useState, useRef } from 'react';
 import Button from './Button';
+import { useUpload } from '../hooks/useApi';
 
 export default function UploadZone({ onUploadSuccess }) {
-  
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(null);
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
+  
+  const { uploadFile, uploadLoading, uploadError } = useUpload();
 
   const handleClick = () => {
     if (fileInputRef.current) {
@@ -47,32 +48,14 @@ export default function UploadZone({ onUploadSuccess }) {
   const handleUpload = async () => {
     if (!selectedFile) return;
 
-    setUploading(true);
-    setError(null);
-
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/upload`;
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Upload failed: ${response.status} ${errorData.detail || response.statusText}`);
-      }
-
-      const result = await response.json();
-      setUploadSuccess(`Document ready! ${selectedFile.name} — ${result.chunks || 0} chunks processed`);
+    const result = await uploadFile(selectedFile, apiUrl);
+    
+    if (result.success) {
+      setUploadSuccess(`Document ready! ${selectedFile.name} — ${result.data.chunks || 0} chunks processed`);
       onUploadSuccess();
-    } catch (err) {
-      setError(`Upload failed: ${err.message}`);
-    } finally {
-      setUploading(false);
+    } else {
+      setError(result.error);
     }
   };
 
@@ -149,15 +132,15 @@ export default function UploadZone({ onUploadSuccess }) {
           
           <Button
             onClick={handleUpload}
-            disabled={uploading}
+            disabled={uploadLoading}
             style={{ width: '100%' }}
           >
-            {uploading ? 'Uploading...' : 'Upload Document'}
+            {uploadLoading ? 'Uploading...' : 'Upload Document'}
           </Button>
         </div>
       )}
 
-      {uploading && (
+      {uploadLoading && (
         <div style={{
           marginTop: '1rem',
           padding: '1rem',
@@ -171,14 +154,7 @@ export default function UploadZone({ onUploadSuccess }) {
           justifyContent: 'center',
           gap: '0.5rem'
         }}>
-          <div style={{
-            width: '20px',
-            height: '20px',
-            border: '2px solid #0284c7',
-            borderTop: '2px solid transparent',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite'
-          }}></div>
+          <div className="loading-spinner"></div>
           <span>Processing document... This may take a moment.</span>
         </div>
       )}
