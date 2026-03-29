@@ -71,7 +71,7 @@ export default function UploadZone({ onUploadSuccess }) {
     
     if (result.success) {
       setUploadSuccess(`Document ready! ${selectedFile.name} — ${result.data.chunks || 0} chunks processed`);
-      onUploadSuccess();
+      onUploadSuccess(selectedFile.name);
     } else {
       setError(result.error);
     }

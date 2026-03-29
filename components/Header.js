@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Container from './Container';
 
-export default function Header({ documentReady }) {
+export default function Header({ documentReady, uploadedFileName, onClearDocument }) {
   return (
     <header style={{
       background: 'white',
@@ -47,8 +47,25 @@ export default function Header({ documentReady }) {
             color: documentReady ? '#047857' : 'var(--text-muted)',
             fontWeight: '500'
           }}>
-            {documentReady ? 'Ready' : 'No document uploaded'}
+            {documentReady ? `Ready: ${uploadedFileName}` : 'No document uploaded'}
           </span>
+          {documentReady && (
+            <button
+              onClick={onClearDocument}
+              style={{
+                background: 'none',
+                border: '1px solid #dc2626',
+                borderRadius: '4px',
+                padding: '0.25rem 0.5rem',
+                cursor: 'pointer',
+                fontSize: '0.75rem',
+                color: '#dc2626',
+                marginLeft: '1rem'
+              }}
+            >
+              Clear
+            </button>
+          )}
         </div>
       </Container>
     </header>

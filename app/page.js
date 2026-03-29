@@ -9,9 +9,16 @@ import ErrorBoundary from '../components/ErrorBoundary';
 
 export default function Home() {
   const [documentReady, setDocumentReady] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState('');
 
-  const handleUploadSuccess = () => {
+  const handleUploadSuccess = (fileName) => {
     setDocumentReady(true);
+    setUploadedFileName(fileName);
+  };
+
+  const handleClearDocument = () => {
+    setDocumentReady(false);
+    setUploadedFileName('');
   };
 
   return (
@@ -21,7 +28,7 @@ export default function Home() {
         display: 'flex',
         flexDirection: 'column'
       }}>
-        <Header documentReady={documentReady} />
+        <Header documentReady={documentReady} uploadedFileName={uploadedFileName} onClearDocument={handleClearDocument} />
         
         <main style={{ flex: 1 }}>
           {!documentReady ? (
