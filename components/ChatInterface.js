@@ -293,6 +293,7 @@ export default function ChatInterface() {
         <Button
           onClick={handleSend}
           disabled={chatLoading || !inputValue.trim()}
+          variant={!inputValue.trim() ? 'secondary' : 'primary'}
           style={{
             padding: '0.75rem 1.5rem'
           }}
