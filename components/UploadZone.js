@@ -121,15 +121,29 @@ export default function UploadZone({ onUploadSuccess }) {
 
       {selectedFile && (
         <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'var(--bg-page)', borderRadius: '6px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <div>
-              <p style={{ fontWeight: '500', color: 'var(--text-primary)', margin: '0 0 0.25rem 0' }}>
-                {selectedFile.name}
-              </p>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>
-                {formatFileSize(selectedFile.size)}
-              </p>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{
+                width: '24px',
+                height: '24px',
+                backgroundColor: '#dc2626',
+                borderRadius: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: '12px',
+                fontWeight: 'bold'
+              }}>
+                📄
+              </div>
+              <div>
+                <p style={{ fontWeight: '500', color: 'var(--text-primary)', margin: '0 0 0.25rem 0' }}>
+                  {selectedFile.name}
+                </p>
+                <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>
+                  {formatFileSize(selectedFile.size)}
+                </p>
+              </div>
             <button
               onClick={() => {
                 setSelectedFile(null);
