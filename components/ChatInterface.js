@@ -264,42 +264,42 @@ export default function ChatInterface() {
           </div>
         )}
 
-        <div ref={messagesEndRef} />
-      </div>
+        <div style={{
+          borderTop: `1px solid var(--border-light)`,
+          padding: '1rem',
+          display: 'flex',
+          gap: '0.5rem'
+        }}>
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Ask anything about your document..."
+            disabled={chatLoading}
+            style={{
+              flex: 1,
+              padding: '0.75rem',
+              border: `1px solid var(--border-light)`,
+              borderRadius: '6px',
+              fontSize: '1rem',
+              outline: 'none',
+              background: 'white'
+            }}
+          />
+          <Button
+            onClick={handleSend}
+            disabled={chatLoading || !inputValue.trim()}
+            variant={!inputValue.trim() ? 'secondary' : 'primary'}
+            style={{
+              padding: '0.75rem 1.5rem'
+            }}
+          >
+            Send
+          </Button>
+        </div>
 
-      <div style={{
-        borderTop: `1px solid var(--border-light)`,
-        padding: '1rem',
-        display: 'flex',
-        gap: '0.5rem'
-      }}>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Ask a question about your document..."
-          disabled={isLoading}
-          style={{
-            flex: 1,
-            padding: '0.75rem',
-            border: `1px solid var(--border-light)`,
-            borderRadius: '6px',
-            fontSize: '1rem',
-            outline: 'none',
-            background: 'white'
-          }}
-        />
-        <Button
-          onClick={handleSend}
-          disabled={chatLoading || !inputValue.trim()}
-          variant={!inputValue.trim() ? 'secondary' : 'primary'}
-          style={{
-            padding: '0.75rem 1.5rem'
-          }}
-        >
-          Send
-        </Button>
+        <div ref={messagesEndRef} />
       </div>
     </div>
   );
