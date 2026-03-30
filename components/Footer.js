@@ -22,7 +22,7 @@ export default function Footer() {
         </p>
         <div>
           <a
-            href="https://github.com"
+            href="https://github.com/fernandojosecc/rag-assistant-ui"
             target="_blank"
             rel="noopener noreferrer"
             style={{

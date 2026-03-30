@@ -9,7 +9,7 @@ Next.js frontend for bilingual RAG document assistant. Upload any PDF and ask qu
 
 **https://rag-assistant-ui.vercel.app/**
 
-*(Add a screenshot here)*
+![RAG Document Assistant Screenshot](rag-assistant-ui.vercel.app_(Mac).png)
 
 ## 📖 What It Does
 
@@ -136,11 +136,12 @@ npm run lint      # Run ESLint for code quality
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. **View Repository**: [![GitHub](https://img.shields.io/badge/GitHub-Review%20Code-blue?style=for-the-badge&logo=github)](https://github.com/fernandojosecc/rag-assistant-ui?tab=readme-ov-file)
+2. Fork the repository
+3. Create a feature branch (`git checkout -b feature/amazing-feature`)
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
 
 ## 📄 License
 
