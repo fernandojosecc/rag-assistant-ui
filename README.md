@@ -1,13 +1,13 @@
 # RAG Document Assistant — Frontend
 
-![Vercel Status](https://therealsujitk-vercel-badge.vercel.app/?app=rag-assistant-ui)
+[![Vercel Status](https://therealsujitk-vercel-badge.vercel.app/?app=rag-assistant-ui)](https://rag-assistant-ui.vercel.app/)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+![Next.js](https://img.shields.io/badge/Next.js-14+-black?logo=next.js)
 
 Next.js frontend for bilingual RAG document assistant. Upload any PDF and ask questions about it — powered by FastAPI, LangChain, and Claude API.
 
 ## 🚀 Live Demo
-
-**https://rag-assistant-ui.vercel.app/**
+[https://rag-assistant-ui.vercel.app/](https://rag-assistant-ui.vercel.app/)
 
 ![RAG Document Assistant Screenshot](rag-assistant-ui.vercel.app_(Mac).png)
 
