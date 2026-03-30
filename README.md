@@ -1,122 +1,96 @@
-# RAG Document Assistant
+# RAG Document Assistant — Frontend
 
-A modern web application that allows users to upload PDF documents and ask questions about their content using AI-powered retrieval-augmented generation (RAG).
+![Live Demo](https://img.shields.io/badge/Live%20Demo-https%3A%2F%2Frag-assistant-ui.vercel.app%2F-brightgreen?style=for-the-badge&logo=vercel)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-## Features
+Next.js frontend for bilingual RAG document assistant. Upload any PDF and ask questions about it — powered by FastAPI, LangChain, and Claude API.
 
-- 📄 **PDF Upload**: Drag-and-drop or click to upload PDF documents
-- 🤖 **AI Chat**: Ask questions about your uploaded documents
-- 🌐 **Multilingual**: Get responses in both English and Spanish
-- 📚 **Source Citations**: See the exact source text used for answers
-- ⚡ **Real-time**: Fast responses powered by FastAPI backend
+## 🚀 Live Demo
 
-## Tech Stack
+**https://rag-assistant-ui.vercel.app/**
 
-### Frontend
-- **Next.js 16** - React framework with App Router
-- **React 19** - UI library
-- **CSS Variables** - Customizable theming system
+*(Add a screenshot here)*
 
-### Backend
+## 📖 What It Does
+
+- **Clean PDF Upload Interface**: Intuitive drag-and-drop or click-to-browse file upload with visual feedback and progress indicators
+- **Real-time Chat Interface**: Ask questions about your uploaded document with smooth, responsive messaging experience
+- **Bilingual Responses**: Get answers in both English and Spanish with source citations for verification
+- **Mobile Responsive**: Fully optimized for all screen sizes with touch-friendly interactions
+
+## 🛠 Tech Stack
+
+**Frontend**
+- **Next.js 16** - React framework with App Router and Server Components
+- **React 19** - Modern UI library with hooks and concurrent features
+- **Pure CSS** - No external UI libraries, custom CSS variables for theming
+- **Deployed on Vercel** - Edge deployment with global CDN
+
+**Backend Integration**
 - **FastAPI** - High-performance Python web framework
-- **LangChain** - RAG orchestration
-- **Claude API** - AI model for responses
-- **Pinecone** - Vector database for document storage
+- **REST API** - Clean endpoints for upload and chat operations
+- **Real-time Communication** - Fetch API with loading states and error handling
 
-## Prerequisites
+## 🚀 How to Run Locally
 
+### Prerequisites
 - Node.js 18+ and npm
 - Python 3.8+ and pip
-- Access to Claude API
-- Pinecone API key
+- Access to Claude API and Pinecone
 
-## Installation
+### Step-by-Step Setup
 
-### Frontend Setup
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/fernandojosecc/rag-assistant-ui.git
+   cd rag-assistant-ui
+   ```
 
-```bash
-cd rag-assistant-ui
-npm install
-npm run dev
-```
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-The frontend will be available at `http://localhost:3000`
+3. **Configure Environment Variables**
+   Create `.env.local` in the project root:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   ```
 
-### Backend Setup
+4. **Start Development Server**
+   ```bash
+   npm run dev
+   ```
 
-```bash
-cd rag-backend
-pip install -r requirements.txt
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-```
+5. **Access the Application**
+   Open `http://localhost:3000` in your browser
 
-The backend API will be available at `http://localhost:8000`
+> **Note**: Requires the backend (`rag-assistant-api`) running locally on port 8000
 
-## Environment Variables
+## ⚙️ Environment Variables
 
-Create a `.env.local` file in the frontend directory:
+| Variable | Description | Required |
+|-----------|-------------|----------|
+| `NEXT_PUBLIC_API_URL` | URL of the FastAPI backend | ✅ Required |
 
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-```
+## 🔗 Related Repository
 
-Create a `.env` file in the backend directory:
+**Backend Repository**: [rag-assistant-api](https://github.com/fernandojosecc/rag-assistant-api)
 
-```env
-ANTHROPIC_API_KEY=your_claude_api_key
-PINECONE_API_KEY=your_pinecone_api_key
-PINECONE_INDEX_NAME=your_index_name
-```
+> The backend handles all AI logic — LangChain for document processing, Claude API for intelligent responses, and Pinecone for vector storage and retrieval.
 
-## Usage
+## 👨‍💻 About the Developer
 
-1. **Upload a Document**
-   - Drag and drop a PDF file into the upload zone
-   - Or click to browse and select a PDF
-   - Wait for processing confirmation
+**Fernando Contreras**  
+AI Tools Specialist  
+Portfolio: [fernandocontreras.dev](https://fernandocontreras.dev)  
+GitHub: [github.com/fernandojosecc](https://github.com/fernandojosecc)
 
-2. **Ask Questions**
-   - Type your question in the chat interface
-   - Press Enter or click "Send"
-   - Receive answers in English and Spanish with source citations
+> Part of my AI engineering portfolio — building real AI applications in public. Focus on production-ready code, modern web technologies, and exceptional user experiences.
 
-3. **View Sources**
-   - Each response includes the exact text source
-   - Helps verify accuracy and find more context
+---
 
-## API Endpoints
-
-### Upload Document
-```
-POST /upload
-Content-Type: multipart/form-data
-
-Response:
-{
-  "status": "success",
-  "chunks": 15,
-  "message": "Successfully processed document.pdf"
-}
-```
-
-### Chat with Document
-```
-POST /chat
-Content-Type: application/json
-
-{
-  "question": "What is this document about?"
-}
-
-Response:
-{
-  "answer": "English: Response text\n\nEspañol: Texto en español\n\nSource: \"Source citation\""
-}
-```
-
-## Development
-
-### Project Structure
+## 📁 Project Structure
 
 ```
 rag-assistant-ui/
@@ -125,62 +99,60 @@ rag-assistant-ui/
 │   ├── layout.js         # Root layout component
 │   └── page.js           # Main page component
 ├── components/           # Reusable React components
-│   ├── Header.js         # Application header
+│   ├── Header.js         # Application header with status
 │   ├── UploadZone.js     # File upload interface
 │   ├── ChatInterface.js  # Chat functionality
+│   ├── Button.js         # Reusable button component
+│   ├── Container.js      # Layout wrapper component
 │   └── Footer.js        # Application footer
+├── hooks/               # Custom React hooks
+│   └── useApi.js        # API call management
 └── public/              # Static assets
 ```
 
-### Available Scripts
+## 🎯 Available Scripts
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
+npm run dev      # Start development server with hot reload
+npm run build    # Build optimized production bundle
 npm run start    # Start production server
-npm run lint      # Run ESLint
+npm run lint      # Run ESLint for code quality
 ```
 
-## Troubleshooting
+## 🔧 Development Notes
 
-### Common Issues
+### Key Features Implemented
+- **Error Boundaries**: Graceful error handling with user-friendly messages
+- **Loading States**: Visual feedback during API calls and file processing
+- **Responsive Design**: Mobile-first approach with fluid layouts
+- **Accessibility**: Semantic HTML and ARIA-friendly interactions
+- **Performance**: Optimized assets and efficient re-renders
 
-**Upload not working**
-- Check that backend is running on port 8000
-- Verify `.env.local` has correct API URL
-- Ensure file is a valid PDF
+### Code Quality
+- **Custom Hooks**: Centralized API logic with loading/error states
+- **Component Reusability**: Shared components for consistent UI
+- **CSS Variables**: Theming system for maintainable styles
+- **Type Safety**: PropTypes and proper component patterns
 
-**No chat responses**
-- Confirm document was uploaded successfully
-- Check backend logs for errors
-- Verify API keys are correctly configured
-
-**CORS errors**
-- Ensure backend has CORS middleware configured
-- Check that frontend URL is in allowed origins
-
-### Browser Console Tips
-
-Open Developer Tools (F12) and check:
-- **Console**: For JavaScript errors
-- **Network**: For failed API requests
-- **Elements**: For UI rendering issues
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🆘 Support & Troubleshooting
 
 For issues and questions:
 - Open an issue on GitHub
-- Check the troubleshooting section above
-- Review browser console for specific errors
+- Check the browser console for specific errors
+- Review the troubleshooting section in the backend documentation
+
+---
+
+**Built with ❤️ using modern web technologies**
