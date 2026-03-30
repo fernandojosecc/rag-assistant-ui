@@ -101,7 +101,7 @@ export default function ChatInterface() {
         flexDirection: 'column',
         gap: '1rem'
       }}>
-        {messages.length === 0 && !isLoading && (
+        {messages.length === 0 && !chatLoading && (
           <div style={{
             textAlign: 'center',
             color: 'var(--text-muted)',
